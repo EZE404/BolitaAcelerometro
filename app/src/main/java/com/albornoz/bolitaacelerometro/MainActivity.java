@@ -47,8 +47,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         anchoPantalla = size.x;
         altoPantalla = size.y;
         // TODO: LA POSICIÓN DE UN VIEW ES 0,0 EN FLOTANTES Y ARRANCA EN UNA ESQUINA
-        //ball.setX(anchoPantalla/2?)
-        //ball.setX(anchoPantalla/2?)
+        //ball.setX((anchoPantalla/2) - (ball.getWidth()/2));
+        //ball.setY((altoPantalla/2) - (ball.getHeight()/2));
     }
 
     @Override
@@ -69,17 +69,18 @@ public class MainActivity extends Activity implements SensorEventListener {
             Log.d("ball", "onSensorChanged: " + sensor + ", x: " +
                     values[0] + ", y: " + values[1] + ", z: " + values[2]);
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER ) {
+                Log.d("ball", "onSensorChanged: Aceleración...");
                 float ox, oy, dx, dy;
                 // Posición original
-                ox = ball.getX();
-                oy = ball.getY();
+                ox = ball.getTranslationX();
+                oy = ball.getTranslationY();
                 // Distancia respecto a posición original
-                dx = values[0] - ox;
-                dy = values[1] - oy;
+                dx = (values[0]*50) - ox;
+                dy = (values[1]*50) - oy;
 
                 // Set posición nueva
-                ball.setX((ox + dx) * -1); // el eje x sale invertido, no sé por qué, por eso * -1
-                ball.setY(oy + dy);
+                ball.setTranslationX((ox + dx) * -1); // el eje x sale invertido, no sé por qué, por eso * -1
+                ball.setTranslationY(oy + dy);
             }
         }
     }
